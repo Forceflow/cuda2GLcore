@@ -1,3 +1,6 @@
+// Implementation of CUDA simpleCUDA2GL sample - based on Cuda Samples 9.0
+// Dependencies: GLFW, GLEW
+
 #ifndef GLEW_STATIC
 	#define GLEW_STATIC
 #endif
@@ -36,6 +39,7 @@ void* cuda_dev_render_buffer; // Cuda buffer for initial render
 struct cudaGraphicsResource* cuda_tex_resource;
 GLuint opengl_tex_cuda;  // OpenGL Texture for cuda result
 extern "C" void
+// Forward declaration of CUDA render
 launch_cudaRender(dim3 grid, dim3 block, int sbytes, unsigned int *g_odata, int imgw);
 
 // CUDA
@@ -74,10 +78,10 @@ static const char *glsl_drawtex_fragshader_src =
 // QUAD GEOMETRY
 GLfloat vertices[] = {
 	// Positions          // Colors           // Texture Coords
-	1.0f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // Top Right
-	0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // Bottom Right
-	-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // Bottom Left
-	-0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f // Top Left 
+	1.0f, 1.0f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // Top Right
+	1.0f, -1.0f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // Bottom Right
+	-1.0f, -1.0f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // Bottom Left
+	-1.0f, 1.0f, 0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f // Top Left 
 };
 // you can also put positions, colors and coordinates in seperate VBO's
 GLuint indices[] = {  // Note that we start from 0!
@@ -98,7 +102,6 @@ void createGLTextureForCUDA(GLuint* gl_tex, cudaGraphicsResource** cuda_tex, uns
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	// Specify 2D texture
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8UI_EXT, size_x, size_y, 0, GL_RGBA_INTEGER_EXT, GL_UNSIGNED_BYTE, NULL);
-	glGenerateMipmap(GL_TEXTURE_2D); // This is necessary for texture to show up in RenderDoc ... why?
 	// Register this texture with CUDA
 	checkCudaErrors(cudaGraphicsGLRegisterImage(cuda_tex, *gl_tex, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsWriteDiscard));
 	SDK_CHECK_ERROR_GL();
@@ -139,6 +142,7 @@ void initCUDABuffers()
 	num_texels = WIDTH * WIDTH;
 	num_values = num_texels * 4;
 	size_tex_data = sizeof(GLubyte) * num_values;
+	// We don't want to use cudaMallocManaged here - since we definitely want
 	checkCudaErrors(cudaMalloc(&cuda_dev_render_buffer, size_tex_data)); // Allocate CUDA memory for color output
 }
 
@@ -149,7 +153,7 @@ bool initGLFW(){
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	window = glfwCreateWindow(WIDTH, WIDTH, "The Simplest OpenGL Quad", NULL, NULL);
+	window = glfwCreateWindow(WIDTH, WIDTH, "SimpleCUDA2GL Modern OpenGL", NULL, NULL);
 	if (!window){ glfwTerminate(); exit(EXIT_FAILURE); }
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
@@ -164,9 +168,6 @@ void generateCUDAImage()
 	dim3 grid(WIDTH / block.x, HEIGHT / block.y, 1); // 2D grid, every thread will compute a pixel
 	launch_cudaRender(grid, block, 0, (unsigned int *) cuda_dev_render_buffer, WIDTH); // launch with 0 additional shared memory allocated
 
-	GLbyte test[8] = { 0,0,0,0,0,0,0,0 };
-	checkCudaErrors(cudaMemcpy(&test, cuda_dev_render_buffer, 8, cudaMemcpyDeviceToHost));
-
 	// We want to copy cuda_dev_render_buffer data to the texture
 	// Map buffer objects to get CUDA device pointers
 	cudaArray *texture_ptr;
@@ -177,18 +178,13 @@ void generateCUDAImage()
 	int num_values = num_texels * 4;
 	int size_tex_data = sizeof(GLubyte) * num_values;
 	checkCudaErrors(cudaMemcpyToArray(texture_ptr, 0, 0, cuda_dev_render_buffer, size_tex_data, cudaMemcpyDeviceToDevice));
-	
-	GLbyte test2[8] = { 0,0,0,0,0,0,0,0 };
-	cudaMemcpy2DFromArray(&test2, 0, texture_ptr, 1, 0, 8, 1, cudaMemcpyDeviceToHost);
-	
 	checkCudaErrors(cudaGraphicsUnmapResources(1, &cuda_tex_resource, 0));
 }
 
 void display(void) {
-
 	generateCUDAImage();
 	glfwPollEvents();
-	// Clear the colorbuffer
+	// Clear the color buffer
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -259,6 +255,7 @@ int main(int argc, char *argv[]) {
 		display();
 		glfwWaitEvents();
 	}
+
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
