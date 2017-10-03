@@ -1,8 +1,6 @@
 #include "cuda_runtime.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
-#include <ctime>
 
 cudaError_t cuda();
 
@@ -31,7 +29,7 @@ __device__ int rgbToInt(float r, float g, float b)
 }
 
 __global__ void
-cudaRender(unsigned int *g_odata, int imgw, int time)
+cudaRender(unsigned int *g_odata, int imgw)
 {
 	extern __shared__ uchar4 sdata[];
 
@@ -42,13 +40,12 @@ cudaRender(unsigned int *g_odata, int imgw, int time)
 	int x = blockIdx.x*bw + tx;
 	int y = blockIdx.y*bh + ty;
 
-	uchar4 c4 = make_uchar4((time % 10) > 5 ? 20 : 120, 0, (y & 0x20) ? 100 : 0, 0);
+	uchar4 c4 = make_uchar4((x & 0x20) ? 100 : 0, 0, (y & 0x20) ? 100 : 0, 0);
 	g_odata[y*imgw + x] = rgbToInt(c4.z, c4.y, c4.x);
 }
 
 extern "C" void
-launch_cudaRender(dim3 grid, dim3 block, int sbytes, unsigned int *g_odata, int imgw, float time)
+launch_cudaRender(dim3 grid, dim3 block, int sbytes, unsigned int *g_odata, int imgw)
 {
-	std::time_t t = std::time(0);
-	cudaRender << < grid, block, sbytes >> >(g_odata, imgw, (int) t);
+	cudaRender << < grid, block, sbytes >> >(g_odata, imgw);
 }
