@@ -4,11 +4,11 @@ GLSLShader::GLSLShader() :
 	shader(0), compiled(false), shadertype(0), shader_name(""), shader_src("") {
 }
 
-GLSLShader::GLSLShader(const std::string& shader_name, const char *shader_text, GLenum shadertype) :
+GLSLShader::GLSLShader(const std::string &shader_name, const char *shader_text, GLenum shadertype) :
 	shader(0), compiled(false), shadertype(shadertype), shader_name(shader_name), shader_src(std::string(shader_text)) {
 }
 
-GLSLShader::GLSLShader(const std::string& shader_name, const std::string& shader_text, GLenum shadertype) :
+GLSLShader::GLSLShader(const std::string &shader_name, const std::string &shader_text, GLenum shadertype) :
 	shader(0), compiled(false), shadertype(shadertype), shader_name(shader_name), shader_src(shader_text) {
 }
 
@@ -16,7 +16,7 @@ std::string GLSLShader::getSrc() const {
 	return shader_src;
 }
 
-void GLSLShader::setSrc(const std::string& new_source) {
+void GLSLShader::setSrc(const std::string &new_source) {
 	shader_src = new_source;
 	compiled = false; // setting new source forces recompile
 }

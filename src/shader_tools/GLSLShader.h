@@ -15,7 +15,8 @@ public:
 
 	GLSLShader::GLSLShader(const std::string &shader_name, const char *shader_text, GLenum shadertype);
 
-	GLSLShader::GLSLShader(std::string shader_name, std::string shader_text, GLenum shadertype);
+	GLSLShader::GLSLShader(const std::string &shader_name, const std::string &shader_text, GLenum shadertype);
+
 	std::string GLSLShader::getSrc() const; 
 
 	void GLSLShader::setSrc(const std::string &new_source); 
