@@ -3,6 +3,8 @@ This is an implementation of the *SimpleCuda2GL* sample provided in the [CUDA Sa
 
 This implementation improves on the original example by using [GLEW](http://glew.sourceforge.net/), [GLFW](http://www.glfw.org/) and OpenGL 4.5 core, using buffer objects, allowing your applications to be analyzed by excellent tools such as Renderdoc, which only support core OpenGL Profiles.
 
+**Note:** The latest CUDA version (9.1) does not support the compiler changes introduced by the latest Visual Studio 2017 update (15.5). Follow [these instructions] to fix the issue.
+
 # Usage
 In the `msvc` folder, there is a VS2017 project. Use the`custom_includes.props` file to define the locations of your GLEW and GLFW installations, then run the project.
 
