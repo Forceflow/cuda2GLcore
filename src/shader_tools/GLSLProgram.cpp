@@ -1,7 +1,7 @@
 #include "GLSLProgram.h"
 
-// Constructors
 GLSLProgram::GLSLProgram() : program(0), vertex_shader(NULL), fragment_shader(NULL), linked(false) {}
+
 GLSLProgram::GLSLProgram(GLSLShader* vertex, GLSLShader* fragment) : program(0), vertex_shader(vertex), fragment_shader(fragment), linked(false) {}
 
 void GLSLProgram::compile() {
@@ -14,10 +14,10 @@ void GLSLProgram::compile() {
 			if (!shaders[i]->compiled) { shaders[i]->compile(); } // try to compile shader if not yet compiled
 			if (shaders[i]->compiled) {
 				glAttachShader(program, shaders[i]->shader);
-				printf("(P) Attached shader \"%s\" (%i) to program \n", shaders[i]->shader_name.c_str(), shaders[i]->shader);
+				printf("(P) Attached shader \"%s\"(%i) to program (%i)\n", shaders[i]->shader_name.c_str(), shaders[i]->shader, program);
 			}
 			else {
-				printf("(P) Failed to attach shader \"%s\" (%i) to program \n", shaders[i]->shader_name.c_str(), shaders[i]->shader);
+				printf("(P) Failed to attach shader \"%s\"(%i) to program (%i)\n", shaders[i]->shader_name.c_str(), shaders[i]->shader, program);
 				glDeleteProgram(program);
 				return;
 			}

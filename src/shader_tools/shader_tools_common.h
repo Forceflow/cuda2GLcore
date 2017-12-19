@@ -19,7 +19,7 @@ struct ShaderStringHelper{
 
 // Function to load text from file
 // static, we only want this function to be available in this file's scope
-inline std::string loadFileToString(const char *filename){
+inline static std::string loadFileToString(const char *filename){
 	std::ifstream file(filename, std::ios::in);
 	std::string text;
 	if (file){
