@@ -3,7 +3,7 @@ This is an implementation of the *SimpleCuda2GL* sample provided in the [CUDA Sa
 
 This implementation improves on the original example by using [GLEW](http://glew.sourceforge.net/), [GLFW](http://www.glfw.org/) and OpenGL 4.5 core, using buffer objects, allowing your applications to be analyzed by excellent tools such as Renderdoc, which only support core OpenGL Profiles.
 
-**Note:** The latest CUDA version (9.1) does not support the compiler changes introduced by the latest Visual Studio 2017 update (15.5). Follow [these instructions](https://devtalk.nvidia.com/default/topic/1027209/cuda-setup-and-installation/cuda-9-0-does-not-work-with-the-latest-vs-2017-update/) to fix the issue.
+**Note:** I've retested this with CUDA 10: this project is still a good replacement for the SimpleCuda2GL sample. Unless you're using OSX as your build target, in which case modern(ish) OpenGL is problematic. I refer tot he original SimpleCuda2GL sample in the CUDA Samples for a TexSubImage2D implementation that might help you.
 
 # Usage
 In the `msvc` folder, there is a VS2017 project. Use the`custom_includes.props` file to define the locations of your GLEW and GLFW installations, then run the project.
