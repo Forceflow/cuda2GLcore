@@ -12,17 +12,11 @@ private:
 
 public:
 	GLSLShader::GLSLShader();
-
 	GLSLShader::GLSLShader(const std::string &shader_name, const char *shader_text, GLenum shadertype);
-
 	GLSLShader::GLSLShader(const std::string &shader_name, const std::string &shader_text, GLenum shadertype);
-
 	std::string GLSLShader::getSrc() const; 
-
 	void GLSLShader::setSrc(const std::string &new_source); 
-
 	void GLSLShader::setSrc(const char* new_source);
-
 	void GLSLShader::compile();
 
 private:

@@ -36,4 +36,3 @@ inline static std::string loadFileToString(const char *filename){
 	}
 	return text;
 }
-
