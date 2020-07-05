@@ -8,7 +8,7 @@ This implementation improves on the original example by using [GLEW](http://glew
 # Usage
 In the `msvc` folder, there is a VS2017 and a VS2019 project (both have been tested using the VS Community Edition). Use the`custom_includes.props` file to define the locations of your GLEW and GLFW installations, then run the project.
 
-![Cuda2GLCore example](https://raw.githubusercontent.com/Forceflow/cuda2GLcore/master/html/cuda2glcore.JPG)
+![Cuda2GLCore example](https://raw.githubusercontent.com/Forceflow/cuda2GLcore/main/html/cuda2glcore.JPG)
 
 # Notes
  * This code contains helper libraries by [Nvidia](http://docs.nvidia.com/cuda/cuda-samples/index.html). All of the code samples are available under a permissive license that allows you to freely incorporate them into your applications and create derivative works for commercial, academic, or personal use.
