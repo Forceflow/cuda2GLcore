@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <!-- NOTE: Define GLFW and GLEW root folders here - the folders containing include and lib -->
   <PropertyGroup Label="UserMacros">
-    <GLFW_DIR>C:\libs\glfw</GLFW_DIR>
-    <GLEW_DIR>C:\libs\glew</GLEW_DIR>
+    <GLFW_DIR>D:\dev\libs\glfw</GLFW_DIR>
+    <GLEW_DIR>D:\dev\libs\glew</GLEW_DIR>
   </PropertyGroup>
   <PropertyGroup>
     <IncludePath>$(GLEW_DIR)\include;$(GLFW_DIR)\include;$(IncludePath)</IncludePath>

@@ -12,7 +12,7 @@
 #include <cuda_runtime.h>
 #include <cuda_gl_interop.h>
 #include "libs/helper_cuda.h"
-#include "libs/helper_cuda_gl.h"
+#include "libs/helper_gl.h"
 // C++ libs
 #include <string>
 #include <filesystem>
@@ -212,7 +212,7 @@ int main(int argc, char *argv[]) {
 	printGlewInfo();
 	printGLInfo();
 
-	findCudaGLDevice(argc, (const char **)argv);
+	findCudaDevice(argc, (const char **)argv);
 	initGLBuffers();
 	initCUDABuffers();
 
