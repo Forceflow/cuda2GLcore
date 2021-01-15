@@ -3,7 +3,7 @@ This is an implementation of the *SimpleCuda2GL* sample provided in the [CUDA Sa
 
 This implementation improves on the original example by using [GLEW](http://glew.sourceforge.net/), [GLFW](http://www.glfw.org/) and OpenGL 4.5 core, using buffer objects, allowing your applications to be analyzed by excellent tools such as Renderdoc, which only support core OpenGL Profiles.
 
-**Note:** I've retested this with CUDA 11.1: this project is still a good replacement for the SimpleCuda2GL sample. Unless you're using OSX as your build target, in which case modern(ish) OpenGL is problematic. I refer tot he original SimpleCuda2GL sample in the CUDA Samples for a TexSubImage2D implementation that might help you.
+**Note:** This example was based on the CUDA 8.0 samples and has been updated to work with newer CUDA versions. Since CUDA 11.0, the official NVIDIA sample has been problematic for me to run ([issue here](https://github.com/NVIDIA/cuda-samples/issues/61)). I'm working on pulling this example in line with the official samples. For now, this still seems like a good starting point, unless you're on OSX.
 
 # Usage
 In the `msvc` folder, there is a VS2017 and a VS2019 project (both have been tested using the VS Community Edition). Use the`custom_includes.props` file to define the locations of your GLEW and GLFW installations, then run the project.
